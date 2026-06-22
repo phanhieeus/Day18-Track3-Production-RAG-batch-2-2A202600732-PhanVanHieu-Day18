@@ -5,8 +5,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# --- API Keys ---
+# --- API Keys / LLM provider (OpenAI-compatible: ckey.vn via xah.io) ---
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "")  # "" → dùng api.openai.com mặc định
+LLM_MODEL = os.getenv("LLM_MODEL", "gpt-4o-mini")
+
+
+def get_openai_client():
+    """OpenAI client trỏ tới provider tuỳ chỉnh (nếu có OPENAI_BASE_URL)."""
+    from openai import OpenAI
+    kwargs = {"api_key": OPENAI_API_KEY}
+    if OPENAI_BASE_URL:
+        kwargs["base_url"] = OPENAI_BASE_URL
+    return OpenAI(**kwargs)
 
 # --- Qdrant ---
 QDRANT_HOST = "localhost"
